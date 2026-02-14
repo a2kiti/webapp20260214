@@ -11,6 +11,8 @@ type Settings = {
   alarmVolume: number;
   fullCompletionMinutes: number;
   fallbackMinutes: number;
+  fullCompletionMinutesWeekend: number;
+  fallbackMinutesWeekend: number;
 };
 
 type CheckKey = "prep" | "homework" | "sleep" | "leave";
@@ -35,6 +37,8 @@ const DEFAULT_SETTINGS: Settings = {
   alarmVolume: 70,
   fullCompletionMinutes: 45,
   fallbackMinutes: 15,
+  fullCompletionMinutesWeekend: 45,
+  fallbackMinutesWeekend: 15,
 };
 
 function loadSettings(): Settings {
@@ -59,6 +63,14 @@ function loadSettings(): Settings {
         typeof parsed.fallbackMinutes === "number"
           ? Math.max(1, Math.min(180, Math.round(parsed.fallbackMinutes)))
           : DEFAULT_SETTINGS.fallbackMinutes,
+      fullCompletionMinutesWeekend:
+        typeof parsed.fullCompletionMinutesWeekend === "number"
+          ? Math.max(1, Math.min(180, Math.round(parsed.fullCompletionMinutesWeekend)))
+          : DEFAULT_SETTINGS.fullCompletionMinutesWeekend,
+      fallbackMinutesWeekend:
+        typeof parsed.fallbackMinutesWeekend === "number"
+          ? Math.max(1, Math.min(180, Math.round(parsed.fallbackMinutesWeekend)))
+          : DEFAULT_SETTINGS.fallbackMinutesWeekend,
     };
   } catch {
     return DEFAULT_SETTINGS;
@@ -160,7 +172,10 @@ export default function SettingsPage() {
     setMessage("音量を保存しました");
   }
 
-  function updateTimerMinutes(key: "fullCompletionMinutes" | "fallbackMinutes", value: number): void {
+  function updateTimerMinutes(
+    key: "fullCompletionMinutes" | "fallbackMinutes" | "fullCompletionMinutesWeekend" | "fallbackMinutesWeekend",
+    value: number,
+  ): void {
     const normalized = Math.max(1, Math.min(180, Math.round(value)));
     const next = { ...settings, [key]: normalized };
     setSettings(next);
@@ -278,7 +293,7 @@ export default function SettingsPage() {
             </div>
 
             <div className={styles.block}>
-              <p className={styles.blockTitle}>タイマー時間</p>
+              <p className={styles.blockTitle}>平日タイマー時間</p>
               <div className={styles.timerGrid}>
                 <label htmlFor="full-minutes">4つ達成（分）</label>
                 <input
@@ -299,6 +314,33 @@ export default function SettingsPage() {
                   max={180}
                   value={settings.fallbackMinutes}
                   onChange={(e) => updateTimerMinutes("fallbackMinutes", Number(e.target.value))}
+                />
+              </div>
+              <p className={styles.hint}>1〜180分</p>
+            </div>
+
+            <div className={styles.block}>
+              <p className={styles.blockTitle}>土日タイマー時間</p>
+              <div className={styles.timerGrid}>
+                <label htmlFor="full-minutes-weekend">4つ達成（分）</label>
+                <input
+                  id="full-minutes-weekend"
+                  className={styles.number}
+                  type="number"
+                  min={1}
+                  max={180}
+                  value={settings.fullCompletionMinutesWeekend}
+                  onChange={(e) => updateTimerMinutes("fullCompletionMinutesWeekend", Number(e.target.value))}
+                />
+                <label htmlFor="fallback-minutes-weekend">未達成（分）</label>
+                <input
+                  id="fallback-minutes-weekend"
+                  className={styles.number}
+                  type="number"
+                  min={1}
+                  max={180}
+                  value={settings.fallbackMinutesWeekend}
+                  onChange={(e) => updateTimerMinutes("fallbackMinutesWeekend", Number(e.target.value))}
                 />
               </div>
               <p className={styles.hint}>1〜180分</p>

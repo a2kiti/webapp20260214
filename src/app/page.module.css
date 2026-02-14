@@ -7,19 +7,19 @@
   grid-template-rows: auto 1fr auto;
   gap: 14px;
   background:
-    radial-gradient(circle at 10% 8%, #e4ffe9 0%, transparent 25%),
-    radial-gradient(circle at 90% 10%, #f3ffd9 0%, transparent 24%),
-    radial-gradient(circle at 84% 88%, #d9fff5 0%, transparent 30%),
-    linear-gradient(165deg, #f8fff9 0%, #f3fffa 50%, #e8fff6 100%);
+    radial-gradient(circle at 10% 8%, #e5f2ff 0%, transparent 25%),
+    radial-gradient(circle at 90% 10%, #dff6ff 0%, transparent 24%),
+    radial-gradient(circle at 84% 88%, #e8ecff 0%, transparent 30%),
+    linear-gradient(165deg, #f8fbff 0%, #f3f8ff 50%, #eaf3ff 100%);
 }
 
 .headerCard,
 .card,
 .footer {
   background: #fff;
-  border: 3px solid #b8f0c8;
+  border: 3px solid #bddcff;
   border-radius: 22px;
-  box-shadow: 0 8px 0 #dcf8e5, 0 14px 24px rgb(51 102 73 / 14%);
+  box-shadow: 0 8px 0 #deecff, 0 14px 24px rgb(52 87 129 / 14%);
 }
 
 .headerCard {
@@ -31,13 +31,13 @@
 
 .label {
   font-size: 17px;
-  color: #35664b;
+  color: #365988;
   font-weight: 800;
 }
 
 .date {
-  font-size: clamp(32px, 4.2vw, 52px);
-  color: #1f4e36;
+  font-size: clamp(26px, 3.4vw, 42px);
+  color: #1f3f68;
   line-height: 1.15;
 }
 
@@ -46,15 +46,15 @@
 }
 
 .minutes {
-  font-size: clamp(54px, 7vw, 88px);
+  font-size: clamp(42px, 5.8vw, 68px);
   line-height: 1;
-  color: #1ca35d;
+  color: #2c7bff;
   font-weight: 900;
 }
 
 .carry {
-  font-size: 22px;
-  color: #25665d;
+  font-size: 18px;
+  color: #2c5f86;
   font-weight: 800;
 }
 
@@ -73,16 +73,16 @@
 }
 
 .card h2 {
-  font-size: clamp(34px, 4vw, 52px);
-  color: #1f4e36;
+  font-size: clamp(28px, 3.2vw, 42px);
+  color: #1f3f68;
   line-height: 1.1;
 }
 
 .sub {
   margin-top: 6px;
   margin-bottom: 12px;
-  color: #3f6d53;
-  font-size: clamp(19px, 2.2vw, 30px);
+  color: #3e5e87;
+  font-size: clamp(16px, 1.9vw, 24px);
   font-weight: 700;
 }
 
@@ -95,48 +95,48 @@
 }
 
 .checkItem {
-  border: 3px solid #bdeecd;
+  border: 3px solid #c8e2ff;
   border-radius: 16px;
-  background: linear-gradient(130deg, #f5fff8 0%, #f4fffb 100%);
-  box-shadow: 0 5px 0 #dcf8e5;
+  background: linear-gradient(130deg, #f5faff 0%, #f2f7ff 100%);
+  box-shadow: 0 5px 0 #e0eeff;
   text-align: left;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: clamp(23px, 2.6vw, 37px);
-  color: #2c6145;
+  font-size: clamp(18px, 2.1vw, 30px);
+  color: #2e5078;
   font-weight: 900;
 }
 
 .checkItem strong {
-  min-width: 70px;
+  min-width: 58px;
   text-align: center;
-  color: #1ea862;
+  color: #2b7fff;
 }
 
 .checkOn {
-  border-color: #84e29f;
-  background: linear-gradient(130deg, #dbfbe5 0%, #edfff2 100%);
-  box-shadow: 0 5px 0 #c6f4d5;
-  color: #1e5c34;
+  border-color: #9bd3ff;
+  background: linear-gradient(130deg, #e9f7ff 0%, #f1f9ff 100%);
+  box-shadow: 0 5px 0 #d6edff;
+  color: #1f4f7b;
 }
 
 .note {
   margin-top: 8px;
-  font-size: 20px;
-  color: #9a5243;
+  font-size: 16px;
+  color: #8f4f47;
   font-weight: 700;
 }
 
 .timer {
   margin-top: 4px;
   margin-bottom: 12px;
-  font-size: clamp(86px, 12vw, 150px);
+  font-size: clamp(68px, 9.4vw, 118px);
   line-height: 0.94;
   letter-spacing: 0.02em;
   font-weight: 900;
-  color: #1f4e36;
+  color: #1f3f68;
 }
 
 .timerButtons {
@@ -149,7 +149,7 @@
 .settingsLink {
   border: none;
   border-radius: 16px;
-  font-size: clamp(24px, 2.8vw, 42px);
+  font-size: clamp(20px, 2.2vw, 32px);
   font-weight: 900;
   padding: 12px 16px;
 }
@@ -157,15 +157,15 @@
 .primaryBtn {
   flex: 1;
   color: #fff;
-  background: linear-gradient(180deg, #4fd98a 0%, #1ea862 100%);
-  box-shadow: 0 6px 0 #17824d;
+  background: linear-gradient(180deg, #65a7ff 0%, #2c7bff 100%);
+  box-shadow: 0 6px 0 #2363cb;
 }
 
 .secondaryBtn {
-  width: 150px;
-  color: #2b6257;
-  background: linear-gradient(180deg, #dcfff1 0%, #b6f8df 100%);
-  box-shadow: 0 6px 0 #95eacb;
+  width: 126px;
+  color: #2a5b82;
+  background: linear-gradient(180deg, #e3f2ff 0%, #c2e2ff 100%);
+  box-shadow: 0 6px 0 #a1cefb;
 }
 
 .primaryBtn:disabled,
@@ -175,8 +175,8 @@
 
 .rule {
   margin-top: 10px;
-  font-size: 21px;
-  color: #3f6d53;
+  font-size: 17px;
+  color: #3e5e87;
   font-weight: 700;
 }
 
@@ -186,8 +186,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  font-size: 22px;
-  color: #2f5a44;
+  font-size: 18px;
+  color: #2f4f74;
   font-weight: 700;
 }
 
@@ -195,8 +195,8 @@
   color: #fff;
   text-decoration: none;
   line-height: 1;
-  background: linear-gradient(180deg, #43bd78 0%, #21935b 100%);
-  box-shadow: 0 6px 0 #197245;
+  background: linear-gradient(180deg, #5a98ff 0%, #2d79f1 100%);
+  box-shadow: 0 6px 0 #1f60c6;
 }
 
 .fullscreenTimer {
@@ -204,9 +204,9 @@
   inset: 0;
   z-index: 50;
   background:
-    radial-gradient(circle at 18% 12%, #dfffe9 0%, transparent 24%),
-    radial-gradient(circle at 80% 14%, #f0ffd8 0%, transparent 20%),
-    linear-gradient(165deg, #2fa46a 0%, #208957 50%, #176b43 100%);
+    radial-gradient(circle at 18% 12%, #e4f2ff 0%, transparent 24%),
+    radial-gradient(circle at 80% 14%, #def7ff 0%, transparent 20%),
+    linear-gradient(165deg, #2a74db 0%, #1f5eb8 50%, #184896 100%);
   color: #fff;
   display: grid;
   grid-template-rows: auto 1fr auto auto;
@@ -216,20 +216,20 @@
 }
 
 .fullscreenLabel {
-  font-size: clamp(38px, 4.2vw, 62px);
+  font-size: clamp(30px, 3.4vw, 48px);
   font-weight: 900;
 }
 
 .fullscreenTime {
-  font-size: clamp(150px, 30vw, 360px);
+  font-size: clamp(118px, 22vw, 280px);
   line-height: 0.9;
   font-weight: 900;
   letter-spacing: 0.03em;
 }
 
 .fullscreenHint {
-  font-size: clamp(30px, 3.2vw, 48px);
-  color: #e9fff1;
+  font-size: clamp(24px, 2.6vw, 38px);
+  color: #ecf5ff;
   font-weight: 700;
 }
 
@@ -241,22 +241,22 @@
 
 .fullscreenButtons .primaryBtn,
 .fullscreenButtons .secondaryBtn {
-  font-size: clamp(34px, 4vw, 56px);
+  font-size: clamp(28px, 3.2vw, 44px);
   padding: 16px 20px;
 }
 
 .fullscreenButtons .secondaryBtn {
-  width: 220px;
-  color: #245841;
-  background: linear-gradient(180deg, #e2fff2 0%, #b3f5d6 100%);
-  box-shadow: 0 7px 0 #8fe4be;
+  width: 180px;
+  color: #295179;
+  background: linear-gradient(180deg, #e3f2ff 0%, #b8dcff 100%);
+  box-shadow: 0 7px 0 #97c8fa;
 }
 
 .confirmOverlay {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgb(16 53 32 / 54%);
+  background: rgb(20 43 76 / 54%);
   display: grid;
   place-items: center;
   padding: 20px;
@@ -265,23 +265,23 @@
 .confirmModal {
   width: min(700px, 100%);
   background: #fff;
-  border: 3px solid #b8f0c8;
+  border: 3px solid #bddcff;
   border-radius: 20px;
-  box-shadow: 0 8px 0 #dcf8e5, 0 16px 32px rgb(41 91 62 / 28%);
+  box-shadow: 0 8px 0 #deecff, 0 16px 32px rgb(38 76 122 / 28%);
   padding: 20px;
   display: grid;
   gap: 14px;
 }
 
 .confirmModal h3 {
-  color: #1f4e36;
-  font-size: clamp(34px, 4vw, 52px);
+  color: #1f3f68;
+  font-size: clamp(28px, 3.2vw, 42px);
   line-height: 1.12;
 }
 
 .confirmModal p {
-  color: #2e6148;
-  font-size: clamp(24px, 2.8vw, 38px);
+  color: #2f5279;
+  font-size: clamp(20px, 2.2vw, 30px);
   font-weight: 700;
 }
 
@@ -308,11 +308,11 @@
   }
 
   .secondaryBtn {
-    width: 110px;
+    width: 96px;
   }
 
   .fullscreenButtons .secondaryBtn {
-    width: 130px;
+    width: 112px;
   }
 
   .confirmButtons {

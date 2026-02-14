@@ -27,6 +27,8 @@ type Settings = {
   alarmVolume: number;
   fullCompletionMinutes: number;
   fallbackMinutes: number;
+  fullCompletionMinutesWeekend: number;
+  fallbackMinutesWeekend: number;
 };
 
 const STORAGE_RECORDS_KEY = "habit-game-records";
@@ -38,6 +40,8 @@ const DEFAULT_SETTINGS: Settings = {
   alarmVolume: 70,
   fullCompletionMinutes: 45,
   fallbackMinutes: 15,
+  fullCompletionMinutesWeekend: 45,
+  fallbackMinutesWeekend: 15,
 };
 const DEFAULT_CHECKS: DailyChecks = {
   prep: false,
@@ -70,8 +74,16 @@ function getYesterdayKey(todayKey: string): string {
   return `${y}-${m}-${d}`;
 }
 
-function allocationFromChecks(checks: DailyChecks, settings: Settings): number {
-  return Object.values(checks).every(Boolean) ? settings.fullCompletionMinutes : settings.fallbackMinutes;
+function isWeekend(dateKey: string): boolean {
+  const day = new Date(`${dateKey}T00:00:00`).getDay();
+  return day === 0 || day === 6;
+}
+
+function allocationFromChecks(checks: DailyChecks, settings: Settings, weekend: boolean): number {
+  if (Object.values(checks).every(Boolean)) {
+    return weekend ? settings.fullCompletionMinutesWeekend : settings.fullCompletionMinutes;
+  }
+  return weekend ? settings.fallbackMinutesWeekend : settings.fallbackMinutes;
 }
 
 function formatClock(seconds: number): string {
@@ -113,6 +125,14 @@ function loadSettings(): Settings {
         typeof parsed.fallbackMinutes === "number"
           ? Math.max(1, Math.min(180, Math.round(parsed.fallbackMinutes)))
           : DEFAULT_SETTINGS.fallbackMinutes,
+      fullCompletionMinutesWeekend:
+        typeof parsed.fullCompletionMinutesWeekend === "number"
+          ? Math.max(1, Math.min(180, Math.round(parsed.fullCompletionMinutesWeekend)))
+          : DEFAULT_SETTINGS.fullCompletionMinutesWeekend,
+      fallbackMinutesWeekend:
+        typeof parsed.fallbackMinutesWeekend === "number"
+          ? Math.max(1, Math.min(180, Math.round(parsed.fallbackMinutesWeekend)))
+          : DEFAULT_SETTINGS.fallbackMinutesWeekend,
     };
   } catch {
     return DEFAULT_SETTINGS;
@@ -275,8 +295,12 @@ export default function Home() {
 
   const currentAllocation = useMemo(() => {
     if (!today) return 15;
-    return allocationFromChecks(today.checks, settings);
+    return allocationFromChecks(today.checks, settings, isWeekend(today.date));
   }, [today, settings]);
+
+  const weekend = today ? isWeekend(today.date) : false;
+  const todayFullMinutes = weekend ? settings.fullCompletionMinutesWeekend : settings.fullCompletionMinutes;
+  const todayFallbackMinutes = weekend ? settings.fallbackMinutesWeekend : settings.fallbackMinutes;
 
   const grantedMinutes = today?.lockedAllocationMinutes ?? currentAllocation;
   const initialSeconds = grantedMinutes * 60 + (today?.carryInSeconds ?? 0);
@@ -419,7 +443,7 @@ export default function Home() {
             </button>
           </div>
           <p className={styles.rule}>
-            ぜんぶOK: {settings.fullCompletionMinutes}分 / それ以外: {settings.fallbackMinutes}分
+            {weekend ? "土日" : "平日"}: ぜんぶOK {todayFullMinutes}分 / それ以外 {todayFallbackMinutes}分
           </p>
         </article>
       </section>
@@ -455,7 +479,7 @@ export default function Home() {
         <section className={styles.confirmOverlay}>
           <article className={styles.confirmModal}>
             <h3>チェック未完了です</h3>
-            <p>このまま始めると {settings.fallbackMinutes}分 です。始めますか？</p>
+            <p>このまま始めると {todayFallbackMinutes}分 です。始めますか？</p>
             <div className={styles.confirmButtons}>
               <button type="button" className={styles.secondaryBtn} onClick={() => setShowStartConfirm(false)}>
                 キャンセル
