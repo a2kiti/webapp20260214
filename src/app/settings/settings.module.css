@@ -1,0 +1,187 @@
+.page {
+  height: 100dvh;
+  padding: 16px;
+  overflow-y: auto;
+  display: block;
+  background:
+    radial-gradient(circle at 12% 10%, #ffe8f5 0%, transparent 24%),
+    radial-gradient(circle at 86% 85%, #d9f4ff 0%, transparent 30%),
+    linear-gradient(165deg, #fff9ff 0%, #f7f8ff 50%, #ecf8ff 100%);
+}
+
+.card {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  background: #fff;
+  border: 3px solid #ffcce9;
+  border-radius: 22px;
+  box-shadow: 0 8px 0 #ffe6f3, 0 14px 24px rgb(120 74 118 / 14%);
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.card h1 {
+  font-size: clamp(36px, 4.2vw, 56px);
+  color: #4f2f68;
+  line-height: 1.1;
+}
+
+.sub {
+  font-size: clamp(22px, 2.6vw, 34px);
+  color: #6d5682;
+  font-weight: 700;
+}
+
+.block {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 3px solid #ffd8ee;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff7fc 0%, #f8f8ff 100%);
+}
+
+.blockTitle {
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 900;
+  color: #4f2f68;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.timerGrid {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 10px;
+  align-items: center;
+}
+
+.block label,
+.block input,
+.block button,
+.back {
+  font-size: clamp(22px, 2.5vw, 36px);
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.block label {
+  color: #614976;
+  font-weight: 800;
+}
+
+.block input {
+  border: 3px solid #ffd2ec;
+  background: #fff;
+}
+
+.number {
+  text-align: right;
+}
+
+.range {
+  width: 100%;
+}
+
+.block button {
+  border: 0;
+  font-weight: 900;
+  color: #325679;
+  background: linear-gradient(180deg, #e4f5ff 0%, #bae6ff 100%);
+  box-shadow: 0 6px 0 #9fd7fb;
+}
+
+.block button.on {
+  color: #fff;
+  background: linear-gradient(180deg, #ff88c6 0%, #ff529f 100%);
+  box-shadow: 0 6px 0 #de438a;
+}
+
+.dangerBtn {
+  color: #fff !important;
+  background: linear-gradient(180deg, #ff8f8f 0%, #e35454 100%) !important;
+  box-shadow: 0 6px 0 #c64444 !important;
+}
+
+.hint {
+  font-size: clamp(20px, 2.2vw, 32px);
+  color: #6f5983;
+  font-weight: 700;
+}
+
+.message {
+  font-size: clamp(22px, 2.4vw, 34px);
+  color: #2f7d4b;
+  font-weight: 900;
+}
+
+.back {
+  display: inline-flex;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 900;
+  background: linear-gradient(180deg, #7e70ff 0%, #6355e7 100%);
+  box-shadow: 0 6px 0 #5648d4;
+}
+
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(35 20 57 / 54%);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.confirmModal {
+  width: min(700px, 100%);
+  background: #fff;
+  border: 3px solid #ffcce9;
+  border-radius: 20px;
+  box-shadow: 0 8px 0 #ffe6f3, 0 16px 32px rgb(92 56 106 / 28%);
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.confirmModal h2 {
+  color: #4f2f68;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.12;
+}
+
+.confirmModal p {
+  color: #614976;
+  font-size: clamp(24px, 2.8vw, 38px);
+  font-weight: 700;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 960px) {
+  .page {
+    padding: 10px;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .confirmButtons {
+    justify-content: stretch;
+  }
+
+  .confirmButtons button {
+    flex: 1;
+  }
+}
