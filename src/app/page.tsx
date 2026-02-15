@@ -103,6 +103,13 @@ function formatJapaneseDate(dateKey: string): string {
   });
 }
 
+function formatCurrentTime(now: Date): string {
+  return now.toLocaleTimeString("ja-JP", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function loadSettings(): Settings {
   if (typeof window === "undefined") return DEFAULT_SETTINGS;
   const raw = localStorage.getItem(STORAGE_SETTINGS_KEY);
@@ -153,11 +160,8 @@ function saveRecords(records: Record<string, DailyRecord>): void {
   localStorage.setItem(STORAGE_RECORDS_KEY, JSON.stringify(records));
 }
 
-function getInitialTodayRecord(): DailyRecord {
-  const todayKey = getTodayKey();
-  const settings = loadSettings();
-  const records = loadRecords();
-  const existing = records[todayKey];
+function createRecordForDate(dateKey: string, records: Record<string, DailyRecord>, settings: Settings): DailyRecord {
+  const existing = records[dateKey];
   if (existing) {
     return {
       ...existing,
@@ -165,7 +169,7 @@ function getInitialTodayRecord(): DailyRecord {
     };
   }
 
-  const yesterdayKey = getYesterdayKey(todayKey);
+  const yesterdayKey = getYesterdayKey(dateKey);
   const yesterday = records[yesterdayKey];
   const carryInSeconds =
     settings.carryOverEnabled && yesterday && yesterday.remainingSeconds && yesterday.remainingSeconds > 0
@@ -173,7 +177,7 @@ function getInitialTodayRecord(): DailyRecord {
       : 0;
 
   return {
-    date: todayKey,
+    date: dateKey,
     checks: { ...DEFAULT_CHECKS },
     carryInSeconds,
     lockedAllocationMinutes: null,
@@ -182,6 +186,13 @@ function getInitialTodayRecord(): DailyRecord {
     isAlarming: false,
     lastStartedAt: null,
   };
+}
+
+function getInitialTodayRecord(): DailyRecord {
+  const todayKey = getTodayKey();
+  const settings = loadSettings();
+  const records = loadRecords();
+  return createRecordForDate(todayKey, records, settings);
 }
 
 function playTimerEndSound(settings: Settings): void {
@@ -226,6 +237,7 @@ function playTimerEndSound(settings: Settings): void {
 export default function Home() {
   const [today, setToday] = useState<DailyRecord | null>(null);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const alarmIntervalRef = useRef<number | null>(null);
   const [showStartConfirm, setShowStartConfirm] = useState(false);
 
@@ -244,6 +256,14 @@ export default function Home() {
     records[today.date] = today;
     saveRecords(records);
   }, [today]);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => window.clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -269,6 +289,29 @@ export default function Home() {
         return next;
       });
     }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const latestSettings = loadSettings();
+      setSettings(latestSettings);
+      setToday((prev) => {
+        if (!prev) return prev;
+
+        const todayKey = getTodayKey();
+        if (prev.date === todayKey) return prev;
+
+        const records = loadRecords();
+        records[prev.date] = prev;
+        const next = createRecordForDate(todayKey, records, latestSettings);
+        records[todayKey] = next;
+        saveRecords(records);
+        setShowStartConfirm(false);
+        return next;
+      });
+    }, 30 * 1000);
+
     return () => window.clearInterval(id);
   }, []);
 
@@ -394,7 +437,10 @@ export default function Home() {
       <section className={styles.headerCard}>
         <div>
           <p className={styles.label}>きょう</p>
-          <h1 className={styles.date}>{formatJapaneseDate(today.date)}</h1>
+          <h1 className={styles.date}>
+            {formatJapaneseDate(today.date)}
+            <span className={styles.time}> {formatCurrentTime(currentTime)}</span>
+          </h1>
         </div>
         <div className={styles.headerRight}>
           <p className={styles.label}>ゲーム時間</p>
