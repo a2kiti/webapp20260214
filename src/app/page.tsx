@@ -153,11 +153,8 @@ function saveRecords(records: Record<string, DailyRecord>): void {
   localStorage.setItem(STORAGE_RECORDS_KEY, JSON.stringify(records));
 }
 
-function getInitialTodayRecord(): DailyRecord {
-  const todayKey = getTodayKey();
-  const settings = loadSettings();
-  const records = loadRecords();
-  const existing = records[todayKey];
+function createRecordForDate(dateKey: string, records: Record<string, DailyRecord>, settings: Settings): DailyRecord {
+  const existing = records[dateKey];
   if (existing) {
     return {
       ...existing,
@@ -165,7 +162,7 @@ function getInitialTodayRecord(): DailyRecord {
     };
   }
 
-  const yesterdayKey = getYesterdayKey(todayKey);
+  const yesterdayKey = getYesterdayKey(dateKey);
   const yesterday = records[yesterdayKey];
   const carryInSeconds =
     settings.carryOverEnabled && yesterday && yesterday.remainingSeconds && yesterday.remainingSeconds > 0
@@ -173,7 +170,7 @@ function getInitialTodayRecord(): DailyRecord {
       : 0;
 
   return {
-    date: todayKey,
+    date: dateKey,
     checks: { ...DEFAULT_CHECKS },
     carryInSeconds,
     lockedAllocationMinutes: null,
@@ -182,6 +179,13 @@ function getInitialTodayRecord(): DailyRecord {
     isAlarming: false,
     lastStartedAt: null,
   };
+}
+
+function getInitialTodayRecord(): DailyRecord {
+  const todayKey = getTodayKey();
+  const settings = loadSettings();
+  const records = loadRecords();
+  return createRecordForDate(todayKey, records, settings);
 }
 
 function playTimerEndSound(settings: Settings): void {
@@ -269,6 +273,29 @@ export default function Home() {
         return next;
       });
     }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const latestSettings = loadSettings();
+      setSettings(latestSettings);
+      setToday((prev) => {
+        if (!prev) return prev;
+
+        const todayKey = getTodayKey();
+        if (prev.date === todayKey) return prev;
+
+        const records = loadRecords();
+        records[prev.date] = prev;
+        const next = createRecordForDate(todayKey, records, latestSettings);
+        records[todayKey] = next;
+        saveRecords(records);
+        setShowStartConfirm(false);
+        return next;
+      });
+    }, 30 * 1000);
+
     return () => window.clearInterval(id);
   }, []);
 
