@@ -52,7 +52,7 @@ const DEFAULT_CHECKS: DailyChecks = {
 
 const CHECK_ITEMS: Array<{ key: CheckKey; label: string }> = [
   { key: "prep", label: "学校の用意" },
-  { key: "homework", label: "宿題" },
+  { key: "homework", label: "宿題とチャレンジ" },
   { key: "sleep", label: "22:00までに就寝" },
   { key: "leave", label: "7:30までに出発" },
 ];
