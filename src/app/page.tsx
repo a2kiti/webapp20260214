@@ -57,25 +57,46 @@ const CHECK_ITEMS: Array<{ key: CheckKey; label: string }> = [
   { key: "leave", label: "7:30までに出発" },
 ];
 
+const TOKYO_TIME_ZONE = "Asia/Tokyo";
+
+function toDateKeyInTokyo(now: Date): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: TOKYO_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+
+  const year = parts.find((part) => part.type === "year")?.value ?? "1970";
+  const month = parts.find((part) => part.type === "month")?.value ?? "01";
+  const day = parts.find((part) => part.type === "day")?.value ?? "01";
+
+  return `${year}-${month}-${day}`;
+}
+
+function fromDateKeyToUtcDate(dateKey: string): Date {
+  const [yearText, monthText, dayText] = dateKey.split("-");
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
 function getTodayKey(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = `${now.getMonth() + 1}`.padStart(2, "0");
-  const d = `${now.getDate()}`.padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  return toDateKeyInTokyo(new Date());
 }
 
 function getYesterdayKey(todayKey: string): string {
-  const date = new Date(`${todayKey}T00:00:00`);
-  date.setDate(date.getDate() - 1);
-  const y = date.getFullYear();
-  const m = `${date.getMonth() + 1}`.padStart(2, "0");
-  const d = `${date.getDate()}`.padStart(2, "0");
+  const date = fromDateKeyToUtcDate(todayKey);
+  date.setUTCDate(date.getUTCDate() - 1);
+  const y = date.getUTCFullYear();
+  const m = `${date.getUTCMonth() + 1}`.padStart(2, "0");
+  const d = `${date.getUTCDate()}`.padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
 
 function isWeekend(dateKey: string): boolean {
-  const day = new Date(`${dateKey}T00:00:00`).getDay();
+  const day = fromDateKeyToUtcDate(dateKey).getUTCDay();
   return day === 0 || day === 6;
 }
 
@@ -94,8 +115,9 @@ function formatClock(seconds: number): string {
 }
 
 function formatJapaneseDate(dateKey: string): string {
-  const d = new Date(`${dateKey}T00:00:00`);
+  const d = fromDateKeyToUtcDate(dateKey);
   return d.toLocaleDateString("ja-JP", {
+    timeZone: TOKYO_TIME_ZONE,
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -105,6 +127,7 @@ function formatJapaneseDate(dateKey: string): string {
 
 function formatCurrentTime(now: Date): string {
   return now.toLocaleTimeString("ja-JP", {
+    timeZone: TOKYO_TIME_ZONE,
     hour: "2-digit",
     minute: "2-digit",
   });
