@@ -101,6 +101,9 @@ function isWeekend(dateKey: string): boolean {
 }
 
 function allocationFromChecks(checks: DailyChecks, settings: Settings, weekend: boolean): number {
+  if (!checks.homework) {
+    return 0;
+  }
   if (Object.values(checks).every(Boolean)) {
     return weekend ? settings.fullCompletionMinutesWeekend : settings.fullCompletionMinutes;
   }
@@ -367,6 +370,7 @@ export default function Home() {
   const weekend = today ? isWeekend(today.date) : false;
   const todayFullMinutes = weekend ? settings.fullCompletionMinutesWeekend : settings.fullCompletionMinutes;
   const todayFallbackMinutes = weekend ? settings.fallbackMinutesWeekend : settings.fallbackMinutes;
+  const homeworkRequiredMinutes = 0;
 
   const grantedMinutes = today?.lockedAllocationMinutes ?? currentAllocation;
   const initialSeconds = grantedMinutes * 60 + (today?.carryInSeconds ?? 0);
@@ -514,6 +518,7 @@ export default function Home() {
           <p className={styles.rule}>
             {weekend ? "土日" : "平日"}: ぜんぶOK {todayFullMinutes}分 / それ以外 {todayFallbackMinutes}分
           </p>
+          <p className={styles.rule}>※「宿題とチャレンジ」が未チェックなら {homeworkRequiredMinutes}分</p>
         </article>
       </section>
 
@@ -548,7 +553,7 @@ export default function Home() {
         <section className={styles.confirmOverlay}>
           <article className={styles.confirmModal}>
             <h3>チェック未完了です</h3>
-            <p>このまま始めると {todayFallbackMinutes}分 です。始めますか？</p>
+            <p>このまま始めると {currentAllocation}分 です。始めますか？</p>
             <div className={styles.confirmButtons}>
               <button type="button" className={styles.secondaryBtn} onClick={() => setShowStartConfirm(false)}>
                 キャンセル
